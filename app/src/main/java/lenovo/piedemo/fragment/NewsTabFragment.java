@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import lenovo.piedemo.base.BaseListFragment;
+
 /**
  * Created by zhangyi on 16-3-8.
  */

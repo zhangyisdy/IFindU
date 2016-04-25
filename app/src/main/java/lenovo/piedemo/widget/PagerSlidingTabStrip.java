@@ -28,11 +28,13 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
-import lenovo.piedemo.R;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import lenovo.piedemo.R;
 
 /**
  * 专为ViewPager定制的滑动选项卡 HOME
