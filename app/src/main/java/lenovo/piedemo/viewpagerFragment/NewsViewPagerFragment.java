@@ -16,10 +16,10 @@ import lenovo.piedemo.fragment.BlogFragment;
 public class NewsViewPagerFragment extends BaseViewPagerFragment {
 
 
-//    @Override
-//    protected void setTabLimit() {
-//        mViewPager.setOffscreenPageLimit(3);
-//    }
+    @Override
+    protected void setTabLimit() {
+        mViewPager.setOffscreenPageLimit(3);
+    }
 
     @Override
     protected void setViewPagerAdapter(ViewPagerFragmentAdapter adapter) {

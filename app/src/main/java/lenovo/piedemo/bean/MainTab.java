@@ -4,13 +4,14 @@ package lenovo.piedemo.bean;
 import lenovo.piedemo.R;
 import lenovo.piedemo.base.BaseFragment;
 import lenovo.piedemo.base.BaseViewPagerFragment;
+import lenovo.piedemo.viewpagerFragment.NewsViewPagerFragment;
 
 /**
  * Created by zhangyi on 16-3-7.
  */
 public enum MainTab {
 
-    NEWS(0, R.string.main_tab_name_news,R.drawable.tab_icon_new,BaseViewPagerFragment.class),
+    NEWS(0, R.string.main_tab_name_news,R.drawable.tab_icon_new,NewsViewPagerFragment.class),
 
     TWEET(1,R.string.main_tab_name_tweet,R.drawable.tab_icon_tweet,BaseFragment.class),
 

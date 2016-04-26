@@ -33,6 +33,7 @@ public class ViewPagerFragmentAdapter extends FragmentStatePagerAdapter {
         mContext = viewPager.getContext();
         mTabStrip = tabStrip;
         mViewPager = viewPager;
+        mViewPager.setAdapter(this);
         mTabStrip.setViewPager(mViewPager);
     }
 
