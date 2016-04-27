@@ -20,6 +20,8 @@ import static java.lang.System.setProperty;
  */
 public class AppContext extends BaseApplication {
 
+    public final static int PAGE_SIZE = 20; // 默认分页大小
+
     private static AppContext mInstance;
 
     @Override

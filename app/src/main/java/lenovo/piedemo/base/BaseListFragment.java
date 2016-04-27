@@ -10,6 +10,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import cz.msebera.android.httpclient.Header;
 import lenovo.piedemo.R;
 import lenovo.piedemo.adapter.ListBaseAdapter;
 import lenovo.piedemo.base.BaseFragment;
@@ -28,6 +31,21 @@ public abstract class BaseListFragment extends BaseFragment implements SwipeRefr
 
     private ListBaseAdapter mAdapter;
 
+    protected int mCurrentPage = 0;
+
+    protected int mCatalog = 1;
+
+    protected AsyncHttpResponseHandler mHandler = new AsyncHttpResponseHandler() {
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,23 +91,46 @@ public abstract class BaseListFragment extends BaseFragment implements SwipeRefr
             mListView.setAdapter(mAdapter);
 
             mEmptyLayout.setVisibility(View.VISIBLE);
-            requestData(false);
+            //requestData(false);
+            sendRequestData();
         }
     }
 
     private void requestData(boolean refresh) {
         if(refresh){  // 请求网络数据
-
+            sendRequestData();
         }else{
 
         }
     }
 
+    protected void sendRequestData() {
+    }
+
     public abstract ListBaseAdapter getListAdapter();
 
+    // 下拉刷新
     @Override
     public void onRefresh() {
+        if(mState == STATE_REFRESH){ //设置刷新状态
+            return;
+        }
 
+        mListView.setSelection(0);
+        setSwipeRefreshLoadingStatus();
+        mCurrentPage = 0;
+        mState = STATE_REFRESH;
+        sendRequestData();
+    }
+
+    /**
+     * 设置SwipeRefresh 下拉刷新的状态，防止重复刷新
+     */
+    private void setSwipeRefreshLoadingStatus() {
+        if(mSwipeRefreshLayout != null){
+            mSwipeRefreshLayout.setRefreshing(true);
+            mSwipeRefreshLayout.setEnabled(false);
+        }
     }
 
     @Override
