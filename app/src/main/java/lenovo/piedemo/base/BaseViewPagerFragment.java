@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import lenovo.piedemo.R;
 import lenovo.piedemo.adapter.ViewPagerFragmentAdapter;
+import lenovo.piedemo.widget.EmptyLayout;
 import lenovo.piedemo.widget.PagerSlidingTabStrip;
 
 /**
@@ -19,6 +20,7 @@ public abstract class BaseViewPagerFragment extends BaseFragment {
     protected PagerSlidingTabStrip mTabStrip;
     protected ViewPager mViewPager;
     protected ViewPagerFragmentAdapter mViewPagerFragmentAdapter;
+    protected EmptyLayout mEmptyLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -27,10 +29,9 @@ public abstract class BaseViewPagerFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        Log.d("zhangyi", "view is:" + view);
         mTabStrip = (PagerSlidingTabStrip)view.findViewById(R.id.pager_tabstrip);
-
         mViewPager = (ViewPager) view.findViewById(R.id.pager);
+        mEmptyLayout = (EmptyLayout) view.findViewById(R.id.error_layout);
 
         mViewPagerFragmentAdapter = new ViewPagerFragmentAdapter(getChildFragmentManager(), mTabStrip , mViewPager);
 
@@ -39,8 +40,7 @@ public abstract class BaseViewPagerFragment extends BaseFragment {
 
     }
 
-    protected void setTabLimit() {
-    }
+    protected void setTabLimit() {}
 
     protected abstract void setViewPagerAdapter(ViewPagerFragmentAdapter adapter);
 }

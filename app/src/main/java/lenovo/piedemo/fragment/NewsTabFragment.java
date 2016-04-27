@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import lenovo.piedemo.adapter.ListBaseAdapter;
 import lenovo.piedemo.base.BaseListFragment;
 
 /**
@@ -25,5 +26,10 @@ public class NewsTabFragment extends BaseListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    private ListBaseAdapter getListAdapter() {
+        return null;
     }
 }
