@@ -9,6 +9,7 @@ import lenovo.piedemo.bean.BlogList;
 import lenovo.piedemo.bean.NewsList;
 import lenovo.piedemo.base.BaseListFragment;
 import lenovo.piedemo.fragment.BlogFragment;
+import lenovo.piedemo.fragment.NewsFragment;
 
 /**
  * Created by zhangyi on 16-4-25.
@@ -24,10 +25,10 @@ public class NewsViewPagerFragment extends BaseViewPagerFragment {
     @Override
     protected void setViewPagerAdapter(ViewPagerFragmentAdapter adapter) {
         String title[] = getResources().getStringArray(R.array.news_viewpage_arrays);
-        adapter.addTab("news", BaseListFragment.class , getBundle(NewsList.CATALOG_ALL) , title[0]);
-        adapter.addTab("news_week", BaseListFragment.class , getBundle(NewsList.CATALOG_WEEK) , title[1]);
-        adapter.addTab("latest_blog", BaseListFragment.class , getBundle(BlogList.CATALOG_LATEST) , title[2]);
-        adapter.addTab("recomend_blog", BaseListFragment.class , getBundle(BlogList.CATALOG_RECOMMEND) , title[3]);
+        adapter.addTab("news", NewsFragment.class , getBundle(NewsList.CATALOG_ALL) , title[0]);
+        adapter.addTab("news_week", NewsFragment.class , getBundle(NewsList.CATALOG_WEEK) , title[1]);
+        adapter.addTab("latest_blog", NewsFragment.class , getBundle(BlogList.CATALOG_LATEST) , title[2]);
+        adapter.addTab("recomend_blog", NewsFragment.class , getBundle(BlogList.CATALOG_RECOMMEND) , title[3]);
     }
 
     /**

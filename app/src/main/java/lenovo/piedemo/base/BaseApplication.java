@@ -17,13 +17,10 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        init();
-    }
-
-    private void init() {
         mContext = getApplicationContext();
         mResources = mContext.getResources();
     }
+
 
     public static synchronized Context getContext(){return mContext;}
 

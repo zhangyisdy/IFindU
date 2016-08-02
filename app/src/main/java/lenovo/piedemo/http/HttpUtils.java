@@ -1,6 +1,7 @@
 package lenovo.piedemo.http;
 
 import android.os.Build;
+import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -21,17 +22,6 @@ public class HttpUtils {
     private final static String API_URL = "http://www.oschina.net/%s";
     private static String appCookie;
 
-    /**
-     * get cookie
-     * @param appContext
-     * @return
-     */
-    public static String getCookie(AppContext appContext) {
-        if (appCookie == null || appCookie == "") {
-            appCookie = appContext.getProperty("cookie");
-        }
-        return appCookie;
-    }
 
     /**
      *  get user agent for http request
@@ -71,19 +61,25 @@ public class HttpUtils {
     public static void setHttpClient(AsyncHttpClient client){
         mHttpClient = client;
         mHttpClient.addHeader("Accept-Language", Locale.getDefault().getLanguage());
-        mHttpClient.addHeader("HOST", HOST);
-        mHttpClient.addHeader("Connection", "Keep-Alive");
-        mHttpClient.getHttpClient().getParams().setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
+        //mHttpClient.addHeader("HOST", HOST);
+        //mHttpClient.addHeader("Connection", "Keep-Alive");
+        mHttpClient.getHttpClient().getParams()
+                .setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
 
         /* set user agent */
-        mHttpClient.setUserAgent(getUserAgent());
-
-        setCookie();
+        //mHttpClient.setUserAgent(getUserAgent());
 
     }
 
-    private static void setCookie(){
-        mHttpClient.addHeader("cookie", getCookie(AppContext.getInstance()));
+    public static void setCookie(String cookie){
+        mHttpClient.addHeader("cookie",cookie);
+    }
+
+    public static String getCookie(AppContext appContext) {
+        if (appCookie == null || appCookie == "") {
+            appCookie = appContext.getProperty("cookie");
+        }
+        return appCookie;
     }
 
     /*
@@ -94,6 +90,7 @@ public class HttpUtils {
         if (!url.startsWith("http:") && !url.startsWith("https:")) {
             destUrl = String.format(API_URL, url);
         }
+        Log.d("BASE_CLIENT", "request:" + destUrl);
         return destUrl;
     }
 

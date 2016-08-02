@@ -1,9 +1,7 @@
 apply plugin: 'com.android.application'
-
 repositories {
     maven { url "https://jitpack.io" }
 }
-
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -32,3 +30,6 @@ android {
     }
 }
 
+dependencies {
+    compile files('src/main/libs/xstream-1.4.7.jar')
+}

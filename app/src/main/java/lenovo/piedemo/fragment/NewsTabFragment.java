@@ -29,7 +29,7 @@ public class NewsTabFragment extends BaseListFragment {
     }
 
     @Override
-    private ListBaseAdapter getListAdapter() {
+    public ListBaseAdapter getListAdapter() {
         return null;
     }
 }

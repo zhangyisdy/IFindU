@@ -1,27 +1,34 @@
 package lenovo.piedemo.base;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.List;
+
 import cz.msebera.android.httpclient.Header;
+import lenovo.piedemo.AppContext;
 import lenovo.piedemo.R;
 import lenovo.piedemo.adapter.ListBaseAdapter;
-import lenovo.piedemo.base.BaseFragment;
+import lenovo.piedemo.bean.Entity;
+import lenovo.piedemo.bean.ListEntity;
 import lenovo.piedemo.widget.EmptyLayout;
 
 /**
  * Created by zhangyi on 16-3-8.
  */
-public abstract class BaseListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener, AbsListView.OnScrollListener {
+public abstract class BaseListFragment<T extends Entity> extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemClickListener, AbsListView.OnScrollListener {
 
     public static String BUNDLE_KEY_CATALOG = "bundle_key_catalog";
 
@@ -29,23 +36,14 @@ public abstract class BaseListFragment extends BaseFragment implements SwipeRefr
     protected ListView mListView;
     protected EmptyLayout mEmptyLayout;
 
-    private ListBaseAdapter mAdapter;
+    protected ListBaseAdapter<T> mAdapter;
 
     protected int mCurrentPage = 0;
 
     protected int mCatalog = 1;
 
-    protected AsyncHttpResponseHandler mHandler = new AsyncHttpResponseHandler() {
-        @Override
-        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+    private ParserTask mParserTask;
 
-        }
-
-        @Override
-        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-        }
-    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,7 +105,52 @@ public abstract class BaseListFragment extends BaseFragment implements SwipeRefr
     protected void sendRequestData() {
     }
 
-    public abstract ListBaseAdapter getListAdapter();
+    public abstract ListBaseAdapter<T> getListAdapter();
+
+    protected ListEntity<T> parseList(InputStream is) throws Exception{
+        return null;
+    }
+
+    protected void executeParseTask(byte[] responseBody){
+        cancelParserTask();
+        mParserTask = new ParserTask(responseBody);
+        mParserTask.execute();
+    }
+
+    private void cancelParserTask() {
+        if (mParserTask != null) {
+            mParserTask.cancel(true);
+            mParserTask = null;
+        }
+    }
+
+    protected void executeOnLoadDataSuccess(List<T> data) {
+
+        mEmptyLayout.setLayoutMode(View.GONE);
+
+        for (int i = 0; i < data.size(); i++) {
+            if (compareTo(mAdapter.getData(), data.get(i))) {
+                data.remove(i);
+                i--;
+            }
+        }
+
+        int adapterState = ListBaseAdapter.STATE_EMPTY_ITEM;
+        if ((mAdapter.getCount() + data.size()) == 0) {
+            adapterState = ListBaseAdapter.STATE_EMPTY_ITEM;
+        } else if (data.size() == 0
+                || (data.size() < getPageSize() && mCurrentPage == 0)) {
+            adapterState = ListBaseAdapter.STATE_NO_MORE;
+            mAdapter.notifyDataSetChanged();
+        } else {
+            adapterState = ListBaseAdapter.STATE_LOAD_MORE;
+        }
+        //mAdapter.setState(adapterState);
+        mAdapter.addData(data);
+        //mAdapter.setState(ListBaseAdapter.STATE_EMPTY_ITEM);
+        //mAdapter.notifyDataSetChanged();
+
+    }
 
     // 下拉刷新
     @Override
@@ -120,7 +163,7 @@ public abstract class BaseListFragment extends BaseFragment implements SwipeRefr
         setSwipeRefreshLoadingStatus();
         mCurrentPage = 0;
         mState = STATE_REFRESH;
-        sendRequestData();
+        //sendRequestData();
     }
 
     /**
@@ -132,6 +175,50 @@ public abstract class BaseListFragment extends BaseFragment implements SwipeRefr
             mSwipeRefreshLayout.setEnabled(false);
         }
     }
+
+
+    class ParserTask extends AsyncTask<Void,Void,String>{
+        private final byte[] responseData;
+
+        List<T> list;
+
+        public ParserTask(byte[] data) {this.responseData = data;}
+
+        @Override
+        protected String doInBackground(Void... params) {
+            try{
+
+                ListEntity<T> data= parseList(new ByteArrayInputStream(responseData));
+                list = data.getList();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            executeOnLoadDataSuccess(list);
+        }
+    }
+
+    protected AsyncHttpResponseHandler mHandler = new AsyncHttpResponseHandler() {
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            Log.d("zhangyi" , "AsyncHttpResponseHandler onSuccess");
+            executeParseTask(responseBody);
+//            if(isAdded()){
+//                executeParseTask(responseBody);
+//            }
+        }
+
+        @Override
+        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            Log.d("zhangyi" , "AsyncHttpResponseHandler onFailure");
+        }
+    };
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -147,4 +234,21 @@ public abstract class BaseListFragment extends BaseFragment implements SwipeRefr
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
     }
+
+    protected int getPageSize() {
+        return AppContext.PAGE_SIZE;
+    }
+
+    protected boolean compareTo(List<? extends Entity> data, Entity enity) {
+        int s = data.size();
+        if (enity != null) {
+            for (int i = 0; i < s; i++) {
+                if (enity.getId() == data.get(i).getId()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

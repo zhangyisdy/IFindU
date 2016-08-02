@@ -22,7 +22,7 @@ public class RemoteHttpApi {
         }else if(catalog == NewsList.CATALOG_MONTH){
             params.put("show","month");
         }
-        HttpUtils.get("action/api/news_list" , params , handler);
+        HttpUtils.get("action/api/news_list",params,handler);
     }
 
     public static void getTestHtml(String url , AsyncHttpResponseHandler handler){

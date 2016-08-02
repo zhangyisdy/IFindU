@@ -119,7 +119,6 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
             case R.id.search:
                 //UIHelper.showSimpleBack(this, SimpleBackPage.SEARCH);
                 break;
-
             default:
                 break;
         }

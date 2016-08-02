@@ -1,6 +1,7 @@
 package lenovo.piedemo.adapter;
 
-import android.content.Entity;
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,10 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lenovo.piedemo.R;
+import lenovo.piedemo.bean.Entity;
 
-/**
- * Created by zhangyi on 16-4-27.
- */
+
 public class ListBaseAdapter<T extends Entity> extends BaseAdapter {
 
     public static final int STATE_EMPTY_ITEM = 0;
@@ -28,7 +28,8 @@ public class ListBaseAdapter<T extends Entity> extends BaseAdapter {
 
     protected int state = STATE_LESS_ONE_PAGE;
 
-    private ArrayList<T> mDatas = new ArrayList<T>();
+    protected ArrayList<T> mDatas = new ArrayList<T>();
+    private LayoutInflater mInflater;
 
     public void setState(int state){
         this.state = state;
@@ -38,6 +39,14 @@ public class ListBaseAdapter<T extends Entity> extends BaseAdapter {
         return this.state;
     }
 
+    protected LayoutInflater getLayoutInflater(Context context) {
+        if (mInflater == null) {
+            mInflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        }
+        return mInflater;
+    }
+    
     /**
      * set the listview data
      * @param data
@@ -47,6 +56,15 @@ public class ListBaseAdapter<T extends Entity> extends BaseAdapter {
             mDatas.addAll(data);
             notifyDataSetChanged();
         }
+    }
+
+    public ArrayList<T> getData() {
+        return mDatas == null ? (mDatas = new ArrayList<T>()) : mDatas;
+    }
+
+    public void clear() {
+        mDatas.clear();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -119,7 +137,7 @@ public class ListBaseAdapter<T extends Entity> extends BaseAdapter {
         return getRealView(position, convertView, parent);
     }
 
-    private View getRealView(int position, View convertView, ViewGroup parent) {
+    protected View getRealView(int position, View convertView, ViewGroup parent) {
         return null;
     }
 }

@@ -2,6 +2,7 @@ package lenovo.piedemo;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.PersistentCookieStore;
@@ -30,7 +31,6 @@ public class AppContext extends BaseApplication {
 
         mInstance = this;
         init();
-
     }
     public static AppContext getInstance() {
         return mInstance;
@@ -42,6 +42,7 @@ public class AppContext extends BaseApplication {
         PersistentCookieStore myCookieStore = new PersistentCookieStore(this);
         client.setCookieStore(myCookieStore);
         HttpUtils.setHttpClient(client);
+        HttpUtils.setCookie(HttpUtils.getCookie(this));
     }
 
     /**
@@ -68,7 +69,7 @@ public class AppContext extends BaseApplication {
      */
     public String getAppId() {
         String uniqueID = getProperty(AppConfig.CONF_APP_UNIQUEID);
-        if (uniqueID.equals(null)) {
+        if (uniqueID == null) {
             uniqueID = UUID.randomUUID().toString();
             setProperty(AppConfig.CONF_APP_UNIQUEID, uniqueID);
         }
