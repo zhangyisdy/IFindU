@@ -86,4 +86,10 @@ public class AppContext extends BaseApplication {
         String res = AppConfig.getAppConfig(this).get(key);
         return res;
     }
+
+    public static boolean get(String key, boolean defValue) {
+        //return getPreferences().getBoolean(key, defValue);
+        return true;
+    }
+
 }

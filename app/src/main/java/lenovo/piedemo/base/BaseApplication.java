@@ -21,6 +21,7 @@ public class BaseApplication extends Application {
         mResources = mContext.getResources();
     }
 
+    public static synchronized Context context(){return mContext;}
 
     public static synchronized Context getContext(){return mContext;}
 

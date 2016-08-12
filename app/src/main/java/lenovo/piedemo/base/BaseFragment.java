@@ -21,6 +21,10 @@ public class BaseFragment extends Fragment{
 
     private LayoutInflater mInflater;
 
+    protected int getLayoutId() {
+        return 0;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

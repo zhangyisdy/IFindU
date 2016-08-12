@@ -1,7 +1,6 @@
 package lenovo.piedemo;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import android.widget.TextView;
 import android.widget.TabHost.TabSpec;
 
 import lenovo.piedemo.bean.MainTab;
+import lenovo.piedemo.fragment.NavigationDrawerFragment;
 import lenovo.piedemo.widget.MyFragmentTabHost;
 
 /**
@@ -57,7 +57,6 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
 
         mTabHost.setCurrentTab(0);
         mTabHost.setOnTabChangedListener(this);
-        mNavigationDrawerFragment.openDrawerMenu();
     }
 
     private void initTab() {
@@ -119,6 +118,13 @@ public class MainActivity extends ActionBarActivity implements View.OnTouchListe
             case R.id.search:
                 //UIHelper.showSimpleBack(this, SimpleBackPage.SEARCH);
                 break;
+            case android.R.id.home:
+                if(mNavigationDrawerFragment.isDraweOpen()){
+                    mNavigationDrawerFragment.closeDrawerMenu();
+                }else{
+                    mNavigationDrawerFragment.openDrawerMenu();
+                }
+
             default:
                 break;
         }

@@ -35,7 +35,6 @@ public abstract class BaseListFragment<T extends Entity> extends BaseFragment im
     protected SwipeRefreshLayout mSwipeRefreshLayout;
     protected ListView mListView;
     protected EmptyLayout mEmptyLayout;
-
     protected ListBaseAdapter<T> mAdapter;
 
     protected int mCurrentPage = 0;
@@ -43,7 +42,6 @@ public abstract class BaseListFragment<T extends Entity> extends BaseFragment im
     protected int mCatalog = 1;
 
     private ParserTask mParserTask;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

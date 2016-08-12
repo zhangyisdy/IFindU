@@ -1,4 +1,4 @@
-package lenovo.piedemo;
+package lenovo.piedemo.fragment;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -12,12 +12,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import lenovo.piedemo.R;
 import lenovo.piedemo.base.BaseFragment;
 
 
-/**
- * Created by zhangyi on 16-3-7.
- */
 public class NavigationDrawerFragment extends BaseFragment {
 
     private ActionBarDrawerToggle mDrawerToggle;
@@ -98,6 +96,10 @@ public class NavigationDrawerFragment extends BaseFragment {
 
     public void openDrawerMenu() {
         mDrawerLayout.openDrawer(mFragmentContainerView);
+    }
+
+    public void closeDrawerMenu(){
+        mDrawerLayout.closeDrawer(mFragmentContainerView);
     }
 
     @Override

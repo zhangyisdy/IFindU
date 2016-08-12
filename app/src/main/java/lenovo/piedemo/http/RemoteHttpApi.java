@@ -1,5 +1,7 @@
 package lenovo.piedemo.http;
 
+import android.util.Log;
+
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -27,6 +29,18 @@ public class RemoteHttpApi {
 
     public static void getTestHtml(String url , AsyncHttpResponseHandler handler){
         HttpUtils.get(url , handler);
+    }
+
+    /**
+     * 获取新闻明细
+     *
+     * @param id      新闻的id
+     * @param handler
+     */
+    public static void getNewsDetail(int id, AsyncHttpResponseHandler handler) {
+        Log.d("zhangyi" , "get News detail");
+        RequestParams params = new RequestParams("id", id);
+        HttpUtils.get("action/api/news_detail", params, handler);
     }
 
 }

@@ -1,6 +1,9 @@
 package lenovo.piedemo.fragment;
 
+import android.content.Intent;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -14,6 +17,7 @@ import lenovo.piedemo.bean.ListEntity;
 import lenovo.piedemo.bean.News;
 import lenovo.piedemo.bean.NewsList;
 import lenovo.piedemo.http.RemoteHttpApi;
+import lenovo.piedemo.ui.DetailActivity;
 import lenovo.piedemo.util.XmlUtils;
 import lenovo.piedemo.widget.EmptyLayout;
 
@@ -29,7 +33,6 @@ public class NewsFragment extends BaseListFragment<News>{
 
     @Override
     protected void sendRequestData(){
-        Log.d("zhangyi","mHandler");
         RemoteHttpApi.getNewsList(mCatalog , mCurrentPage , mHandler);
     }
 
@@ -37,7 +40,6 @@ public class NewsFragment extends BaseListFragment<News>{
     protected NewsList parseList(InputStream is) throws Exception{
         NewsList list = null;
         list = XmlUtils.toBean(NewsList.class ,is);
-        Log.d("zhangyi" , "list is:"+list);
         return list;
     }
 
@@ -54,5 +56,14 @@ public class NewsFragment extends BaseListFragment<News>{
             return;
         }
         super.executeOnLoadDataSuccess(data);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        News news = mAdapter.getItem(position);
+        Intent intent = new Intent();
+        intent.setClass(getContext(), DetailActivity.class);
+        intent.putExtra("id",news.getId());
+        startActivity(intent);
     }
 }

@@ -38,7 +38,7 @@
         android:id="@+id/navigation_drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
-        android:name="lenovo.piedemo.NavigationDrawerFragment"
+        android:name="lenovo.piedemo.fragment.NavigationDrawerFragment"
         android:layout_gravity="start"
         tools:layout="@layout/fragment_navigation_drawer"/>
 
